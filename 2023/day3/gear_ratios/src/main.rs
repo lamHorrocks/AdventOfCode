@@ -17,17 +17,25 @@ fn main() {
   let schematic: Vec<Vec<Token>> = tokenize(&input);
   let mut visited: Vec<(usize, usize)> = vec![];
   let mut nums: Vec<u32> = vec![];
+  let mut gear_ratio: u32 = 0;
 
   for (i, row) in schematic.iter().enumerate() {
     for (j, tok) in row.iter().enumerate() {
       if matches!(tok, Token::Symbol) {
-        nums.append(&mut get_adjacent_nums(&schematic, &mut visited, i, j));
+        let mut adjacent_nums = get_adjacent_nums(&schematic, &mut visited, i, j);
+
+        if adjacent_nums.len() == 2 {
+          gear_ratio += adjacent_nums[0] * adjacent_nums[1];
+        }
+
+        nums.append(&mut adjacent_nums);
       }
     }
   }
 
   let sum = nums.iter().sum::<u32>();
-  println!("{sum}");
+  println!("Sum(body once told me): {sum}");
+  println!("Gear Ratio Sum {gear_ratio}");
 }
 
 fn tokenize(input: &Vec<String>) -> Vec<Vec<Token>> {
