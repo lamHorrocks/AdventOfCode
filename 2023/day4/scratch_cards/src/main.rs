@@ -76,6 +76,7 @@ fn main() {
     }
   }
 
+  //Part 2
   println!("Total Scratch Cards: {total_scratch_cards}");
 }
 
