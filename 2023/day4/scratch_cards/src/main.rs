@@ -3,6 +3,7 @@ use std::fs::read_to_string;
 #[derive(Debug)]
 struct Card {
   id: u32,
+  copies: u32,
   winning_numbers: Vec<u32>,
   numbers: Vec<u32>,
 }
@@ -23,6 +24,27 @@ impl Card {
 
     points
   }
+
+  fn count_matches(&self) -> u32 {
+    let mut count = 0;
+
+    for i in &self.numbers {
+      if self.winning_numbers.contains(&i) {
+        count += 1;
+      }
+    }
+
+    count
+  }
+
+  fn clone(&self) -> Card {
+    Card {
+      id: self.id.clone(),
+      copies: self.copies.clone(),
+      winning_numbers: self.winning_numbers.clone(),
+      numbers: self.numbers.clone()
+    }
+  }
 }
 
 fn main() {
@@ -41,7 +63,20 @@ fn main() {
   cards.iter().for_each(|card| total_points += card.points());
 
   //Part 1
-  println!("{}", total_points);
+  println!("Total Points {total_points}");
+
+  let mut total_scratch_cards = 0;
+
+  for i in 0..cards.len() {
+    total_scratch_cards += cards[i].copies;
+    let matches = cards[i].count_matches();
+
+    for j in 1..=matches as usize {
+      cards[i + j].copies += cards[i].copies;
+    }
+  }
+
+  println!("Total Scratch Cards: {total_scratch_cards}");
 }
 
 fn parse_card_from_line(line: &str) -> Card {
@@ -68,7 +103,8 @@ fn parse_card_from_line(line: &str) -> Card {
     .collect();
 
   return Card {
-    id, 
+    id,
+    copies: 1,
     winning_numbers,
     numbers,
   }
