@@ -7,25 +7,36 @@ fn main() {
     .map(String::from)
     .collect();
 
-  let times: Vec<u32> = input[0].split(':')
+  let times: Vec<u64> = input[0].split(':')
     .collect::<Vec<&str>>()[1]
     .split_whitespace()
-    .map(|str| str.parse::<u32>().unwrap())
+    .map(|str| str.parse::<u64>().unwrap())
     .collect();
 
-  let distances: Vec<u32> = input[1].split(':')
+  let distances: Vec<u64> = input[1].split(':')
     .collect::<Vec<&str>>()[1]
     .split_whitespace()
-    .map(|str| str.parse::<u32>().unwrap())
+    .map(|str| str.parse::<u64>().unwrap())
     .collect();
 
-  let mut time_dist_pairs: Vec<(u32, u32)> = Vec::new();
+  let mut time_dist_pairs: Vec<(u64, u64)> = Vec::new();
+  let mut monolith_pair: (u64, u64) = (0, 0);
+  let mut time_str = String::from("");
+  let mut dist_str = String::from("");
 
   for i in times.into_iter().zip(distances.into_iter()) {
     time_dist_pairs.push(i);
+    time_str.push_str(&i.0.to_string());
+    dist_str.push_str(&i.1.to_string());
   }
 
-  let mut win_count_list: Vec<u32> = Vec::new();
+  println!("{dist_str}");
+
+  monolith_pair.0 = time_str.parse::<u64>().unwrap();
+  monolith_pair.1 = dist_str.parse::<u64>().unwrap();
+
+  //Part 1
+  let mut win_count_list: Vec<u64> = Vec::new();
 
   for (t, d) in time_dist_pairs {
     let mut win_count = 0;
@@ -39,5 +50,15 @@ fn main() {
     win_count_list.push(win_count);
   }
 
-  println!("{}", win_count_list.iter().product::<u32>());
+  println!("Part 1: {}\n", win_count_list.iter().product::<u64>());
+
+  let mut wins = 0;
+  //Part 2
+  for i in 0..monolith_pair.0 {
+    if i * (monolith_pair.0 - i) > monolith_pair.1 {
+      wins += 1;
+    }
+  }
+
+  println!("Part 2: {wins}");
 }
