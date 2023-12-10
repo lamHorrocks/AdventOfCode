@@ -52,8 +52,8 @@ fn main() {
 
   println!("Part 1: {}\n", win_count_list.iter().product::<u64>());
 
-  let mut wins = 0;
   //Part 2
+  let mut wins = 0;
   for i in 0..monolith_pair.0 {
     if i * (monolith_pair.0 - i) > monolith_pair.1 {
       wins += 1;
