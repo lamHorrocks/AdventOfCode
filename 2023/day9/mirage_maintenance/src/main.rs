@@ -13,25 +13,35 @@ fn main() {
     sequences.push(line.split_whitespace().map(|num| num.parse::<i32>().unwrap()).collect());
   }
   
+  //Part 1
   let mut sum = 0;
 
-  for sequence in sequences {
-    sum += get_sequence_value(&sequence);
+  for sequence in sequences.clone() {
+    sum += get_sequence_right_value(&sequence);
   }
 
-  println!("{sum}");
+  println!("Part 1: {sum}");
+
+  //Part 2
+  sum = 0;
+
+  for sequence in sequences.clone() {
+    sum += get_sequence_left_value(&sequence);
+  }
+
+  println!("Part 2: {sum}");
 }
 
 //Part 1
-fn get_sequence_value(sequence: &Vec<i32>) -> i32 {
+fn get_sequence_right_value(sequence: &Vec<i32>) -> i32 {
   let derived = derive_sequences(&sequence);
-  let mut sum = 0;
+  derived.iter().rev().fold(0, |acc, x| acc + x.last().unwrap())
+}
 
-  for sequence in derived.iter().rev() {
-    sum += sequence.last().unwrap()
-  }
-
-  sum
+//Part 2
+fn get_sequence_left_value(sequence: &Vec<i32>) -> i32 {
+  let derived = derive_sequences(&sequence);
+  derived.iter().rev().fold(0, |acc, x| x.first().unwrap() - acc)
 }
 
 fn derive_sequences(sequence: &Vec<i32>) -> Vec<Vec<i32>> {
