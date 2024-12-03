@@ -15,7 +15,41 @@ int compare(const void* a, const void* b) {
   return 1;
 }
 
+// assumes sorted array
+int count_occurences(int target, int* list, int len, int l, int r) {
+  while (l <= r) {
+    int m = (l + r) / 2;
+
+    if (list[m] == target) {
+      int count = 1;
+      l = m - 1;
+      r = m + 1;
+
+      while (l > -1 && list[l] == target) {
+        ++count;
+        --l;
+      }
+
+      while (r < len && list[r] == target) {
+        ++count;
+        ++r;
+      }
+
+      return count;
+    }
+
+    if (target < list[m]) {
+      r = m - 1;
+    } else {
+      l = m + 1;
+    }
+  }
+
+  return 0;
+}
+
 int main(void) {
+  
   const char* fname = "input.txt";
 
   FILE* fp = fopen(fname, "r");
@@ -56,15 +90,24 @@ int main(void) {
   qsort(list1, line_count, sizeof(int), compare);
   qsort(list2, line_count, sizeof(int), compare);
 
+  // Part 1
   int sum = 0;
   for (int i = 0; i < line_count; ++i) {
     sum += abs(list1[i] - list2[i]);
   }
+  printf("Total Distance: %d\n", sum);
+
+
+  // Part 2
+  int sim_score = 0;
+  for (int i = 0; i < line_count; ++i) {
+    int target = list1[i];
+    sim_score += target * count_occurences(target, list2, line_count, 0, line_count - 1);
+  }
+  printf("Similarty Score: %d\n", sim_score);
 
   free(line);
   fclose(fp);
-
-  printf("SUM: %d\n", sum);
 
   return 0;
 }
