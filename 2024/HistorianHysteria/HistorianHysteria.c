@@ -49,7 +49,6 @@ int count_occurences(int target, int* list, int len, int l, int r) {
 }
 
 int main(void) {
-  
   const char* fname = "input.txt";
 
   FILE* fp = fopen(fname, "r");
@@ -96,7 +95,6 @@ int main(void) {
     sum += abs(list1[i] - list2[i]);
   }
   printf("Total Distance: %d\n", sum);
-
 
   // Part 2
   int sim_score = 0;
