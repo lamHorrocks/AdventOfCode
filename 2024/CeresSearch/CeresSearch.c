@@ -154,6 +154,7 @@ int occurences(int row_len, int col_len, char board[row_len][col_len], int row, 
     count += valid;
   }
 
+  free(words);
   return count;
 }
 
@@ -218,6 +219,7 @@ int main(void) {
     pos = getline(&line, &line_len, fp);
   }
 
+  free(line);
   rewind(fp);
 
   char board[row][col];
@@ -257,5 +259,6 @@ int main(void) {
   }
 
   printf("\nTotal Xmas: %d\n", totalXmas);
+  fclose(fp);
 
 }
